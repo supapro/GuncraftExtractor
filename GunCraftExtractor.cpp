@@ -80,11 +80,6 @@ void XnbToPng(XNB *xnb)
 
 	cout << "Width: " << width << "; Height: " << height << endl;
 
-	if (width * height > 4194304) {
-		cout << "Width and/or height to big" << endl;
-		return;
-	}
-
 	unsigned int mipCount = xnb->readInt();
 
 	//cout << "Mip count: " << to_string(mipCount) << endl;
