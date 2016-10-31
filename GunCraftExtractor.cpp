@@ -12,11 +12,7 @@ void setConsoleTitle(const char *title)
 	SetConsoleTitleA(title);
 #else
 	// set title terminal command.
-<<<<<<< HEAD
 	printf("%c[0;%s%c", '\033', title, '\007');
-=======
-	printf("%c[0;%s%c", '/033', title, '/007');
->>>>>>> e46ed88057cde723a5b17d5dafc0a3e1d7e03c9e
 #endif
 }
 
