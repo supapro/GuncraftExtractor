@@ -217,8 +217,8 @@ void PngToXnb(string filename)
 		if (i == mipCount - 1) // don't calculate a mipmap for the last one
 			break;
 
-		unsigned int newWidth = max(ceil((double)width / 2.0), 1);
-		unsigned int newHeight = max(ceil((double)height / 2.0), 1);
+		unsigned int newWidth = max(width / 2 + width % 2, 1U);
+		unsigned int newHeight = max(height / 2 + height % 2, 1U);
 
 		size = newWidth * newHeight * 4;
 
