@@ -1,8 +1,11 @@
-#include "GunCraftExtractor.h"
+#include <memory>
+
+#include "../include/GunCraftExtractor.h"
 
 #if defined(_WIN32)
 #include <windows.h>
 #endif
+
 
 using namespace std;
 
@@ -56,9 +59,9 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void convertXnb(string fileName)
+void convertXnb(const std::string& fileName)
 {
-	XNB *xnb = new XNB();
+        auto xnb = XNBUniquePtr(new XNB());
 	string error = xnb->openRead(fileName);
 	if (!error.empty()) {
 		cout << error << endl;
@@ -67,89 +70,88 @@ void convertXnb(string fileName)
 
 	if (xnb->readerType == 1) {
 		cout << "It's a texture file, converting to png" << endl;
-		XnbToPng(xnb);
+		XnbToPng(std::move(xnb));
 	}
 	else if (xnb->readerType == 2) {
 		cout << "It's a sound effect file, converting to wav" << endl;
-		XnbToWav(xnb);
+		XnbToWav(std::move(xnb));
 	}
 	else {
 		cout << "This xnb file type isn't supported" << endl;
 	}
-
-	delete xnb;
 }
 
-void XnbToPng(XNB *xnb)
+void XnbToPng(XNBUniquePtr xnb)
 {
 
-	unsigned int format = xnb->readInt();
+	const unsigned int format = xnb->readInt();
 	if (format != 0) {
-		cout << "Unsupported surface format " << to_string(format) << endl;
+		std::cout << "Unsupported surface format " << std::to_string(format) << std::endl;
 		return;
 	}
 
-	unsigned int width = xnb->readInt();
-	unsigned int height = xnb->readInt();
+	const unsigned int width = xnb->readInt();
+	const unsigned int height = xnb->readInt();
 
-	cout << "Width: " << width << "; Height: " << height << endl;
+	std::cout << "Width: " << width << "; Height: " << height << std::endl;
 
-	unsigned int mipCount = xnb->readInt();
+	//const unsigned int mipCount = xnb->readInt();
 
 	//cout << "Mip count: " << to_string(mipCount) << endl;
 
-	unsigned int size = xnb->readInt();
+	const unsigned int size = xnb->readInt();
 	if (size != width * height * 4) {
-		cout << "Size " << size << " isn't correct, it should be " << width * height * 4 << endl;
+		std::cout << "Size " << size << " isn't correct, it should be " << width * height * 4 << std::endl;
 		return;
 	}
 
-	string filename = xnb->filename;
-	string filenamePng = filename.substr(0, filename.length() - 4) + ".png";
+	const std::string filename = xnb->filename;
+	const std::string filenamePng = filename.substr(0, filename.length() - 4) + ".png";
 
 	char* imageData = xnb->readBytes(size);
-	vector<unsigned char> image(imageData, imageData + size);
+	std::vector<unsigned char> image(imageData, imageData + size);
 
-	unsigned error = lodepng::encode(filenamePng, image, width, height);
+	// Was unused
+	//const unsigned error = lodepng::encode(filenamePng, image, width, height);
 
-	cout << "Successfull converted the xnb texture file " << filename << " to png file " << filenamePng << endl;
+	std::cout << "Successfull converted the xnb texture file " << filename << " to png file " << filenamePng << std::endl;
 }
 
-void XnbToWav(XNB *xnb)
+void XnbToWav(XNBUniquePtr xnb)
 {
 	if (xnb->readInt() != 18) {
-		cout << "Wrong format chunk size" << endl;
+		std::cout << "Wrong format chunk size" << std::endl;
 		return;
 	}
 
 	if (xnb->readShort() != 1) {
-		cout << "Wrong wav codec" << endl;
+		std::cout << "Wrong wav codec" << std::endl;
 		return;
 	}
 
-	unsigned short channels = xnb->readShort();
-	unsigned int samplesPerSec = xnb->readInt();
-	unsigned int avgBytesPerSec = xnb->readInt();
-	unsigned short blockAlign = xnb->readShort();
-	unsigned short bitsPerSample = xnb->readShort();
+	const unsigned short channels = xnb->readShort();
+	const unsigned int samplesPerSec = xnb->readInt();
+	const unsigned int avgBytesPerSec = xnb->readInt();
+	const unsigned short blockAlign = xnb->readShort();
+	const unsigned short bitsPerSample = xnb->readShort();
 
 	if (avgBytesPerSec != (samplesPerSec * channels * (bitsPerSample / 8))) {
-		cout << "Average bytes per second is incorrect" << endl;
+		std::cout << "Average bytes per second is incorrect" << std::endl;
 		return;
 	}
 
 	if (blockAlign != (channels * (bitsPerSample / 8))) {
-		cout << "Block align is incorrect" << endl;
+		std::cout << "Block align is incorrect" << std::endl;
 		return;
 	}
 
 	xnb->movePointer(2);
 
-	unsigned int dataSize = xnb->readInt();
+	const unsigned int dataSize = xnb->readInt();
 	char* waveData = xnb->readBytes(dataSize);
 
-	string filename = xnb->filename;
-	string filenameWav = filename.substr(0, filename.length() - 4) + ".wav";
+	const std::string filename = xnb->filename;
+	const std::string filenameWav = filename.substr(0, filename.length() - 4) + ".wav";
 	
 	WAV* wav = new WAV();
 
@@ -167,17 +169,17 @@ void XnbToWav(XNB *xnb)
 
 	delete wav;
 
-	cout << "Successfull converted the xnb soundeffect file " << filename << " to wav file" << filenameWav << endl;
+	std::cout << "Successfull converted the xnb soundeffect file " << filename << " to wav file" << filenameWav << std::endl;
 }
 
-void PngToXnb(string filename)
+void PngToXnb(const std::string& filename)
 {
-	string filenameXnb = filename.substr(0, filename.length() - 4) + ".xnb";
+	const std::string filenameXnb = filename.substr(0, filename.length() - 4) + ".xnb";
 	XNB *xnb = new XNB();
 	xnb->readers.push_back(make_pair("Microsoft.Xna.Framework.Content.Texture2DReader, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553", 0));
-	string errorXnb = xnb->openWrite(filenameXnb);
+	const std::string errorXnb = xnb->openWrite(filenameXnb);
 	if (!errorXnb.empty()) {
-		cout << errorXnb << endl;
+		std::cout << errorXnb << std::endl;
 		delete xnb;
 		return;
 	}
@@ -254,7 +256,7 @@ void PngToXnb(string filename)
 	cout << "Successfull converted the png file " << filename << " to xnb texture file" <<  filenameXnb << endl;
 }
 
-void WavToXnb(string filename)
+void WavToXnb(const std::string& filename)
 {
 	WAV* wav = new WAV();
 	string error = wav->openRead(filename);

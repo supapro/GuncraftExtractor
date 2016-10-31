@@ -1,4 +1,4 @@
-#include "WAV.h"
+#include "../include/WAV.h"
 
 WAV::WAV(){}
 
