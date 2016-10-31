@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "GunCraftExtractor.h"
+#include "../include/GunCraftExtractor.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-typedef std::unique_ptr<XNB> XNBUniquePtr;
-
 void convertXnb(const std::string& fileName)
 {
         auto xnb = XNBUniquePtr(new XNB());
@@ -76,7 +74,7 @@ void convertXnb(const std::string& fileName)
 	}
 	else if (xnb->readerType == 2) {
 		cout << "It's a sound effect file, converting to wav" << endl;
-		XnbToWav(xnb);
+		XnbToWav(std::move(xnb));
 	}
 	else {
 		cout << "This xnb file type isn't supported" << endl;
@@ -97,7 +95,7 @@ void XnbToPng(XNBUniquePtr xnb)
 
 	std::cout << "Width: " << width << "; Height: " << height << std::endl;
 
-	const unsigned int mipCount = xnb->readInt();
+	//const unsigned int mipCount = xnb->readInt();
 
 	//cout << "Mip count: " << to_string(mipCount) << endl;
 
@@ -113,7 +111,8 @@ void XnbToPng(XNBUniquePtr xnb)
 	char* imageData = xnb->readBytes(size);
 	std::vector<unsigned char> image(imageData, imageData + size);
 
-	const unsigned error = lodepng::encode(filenamePng, image, width, height);
+	// Was unused
+	//const unsigned error = lodepng::encode(filenamePng, image, width, height);
 
 	std::cout << "Successfull converted the xnb texture file " << filename << " to png file " << filenamePng << std::endl;
 }
@@ -257,7 +256,7 @@ void PngToXnb(const std::string& filename)
 	cout << "Successfull converted the png file " << filename << " to xnb texture file" <<  filenameXnb << endl;
 }
 
-void WavToXnb(string filename)
+void WavToXnb(const std::string& filename)
 {
 	WAV* wav = new WAV();
 	string error = wav->openRead(filename);

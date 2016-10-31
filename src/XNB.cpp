@@ -1,4 +1,4 @@
-#include "XNB.h"
+#include "../include/XNB.h"
 
 XNB::XNB(){}
 
