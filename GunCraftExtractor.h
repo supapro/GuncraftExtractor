@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <conio.h>
+// #include <conio.h>
 #include <Windows.h>
 #include <math.h>
 
