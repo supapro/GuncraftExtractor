@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 // #include <conio.h>
-#include <Windows.h>
+// #include <Windows.h>
 #include <math.h>
 
 #include "lodepng/lodepng.h"

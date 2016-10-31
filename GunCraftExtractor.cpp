@@ -1,10 +1,24 @@
 #include "GunCraftExtractor.h"
 
+#if defined(_WIN32)
+#include <windows.h>
+#endif
+
 using namespace std;
+
+void setConsoleTitle(const char *title)
+{
+#if defined(_WIN32)
+	SetConsoleTitleA(title);
+#else
+	// set title terminal command.
+	printf("%c[0;%s%c", '/033', title, '/007');
+#endif
+}
 
 int main(int argc, char *argv[]) 
 {
-	SetConsoleTitle(TEXT("GunCraft Extractor - v1.1"));
+	setConsoleTitle("GunCraft Extractor - v1.1");
 
 	if (argc < 2) {
 		cout << "You need to start this program by dropping a file(s) on the executable." << endl;
