@@ -64,20 +64,20 @@ void convertXnb(const std::string& fileName)
         auto xnb = XNBUniquePtr(new XNB());
 	string error = xnb->openRead(fileName);
 	if (!error.empty()) {
-		cout << error << endl;
+		std::cout << error << std::endl;
 		return;
 	}
 
 	if (xnb->readerType == 1) {
-		cout << "It's a texture file, converting to png" << endl;
+		std::cout << "It's a texture file, converting to png" << std::endl;
 		XnbToPng(std::move(xnb));
 	}
 	else if (xnb->readerType == 2) {
-		cout << "It's a sound effect file, converting to wav" << endl;
+		std::cout << "It's a sound effect file, converting to wav" << std::endl;
 		XnbToWav(std::move(xnb));
 	}
 	else {
-		cout << "This xnb file type isn't supported" << endl;
+		std::cout << "This xnb file type isn't supported" << std::endl;
 	}
 }
 
@@ -153,21 +153,19 @@ void XnbToWav(XNBUniquePtr xnb)
 	const std::string filename = xnb->filename;
 	const std::string filenameWav = filename.substr(0, filename.length() - 4) + ".wav";
 	
-	WAV* wav = new WAV();
+	WAV wav;
 
-	wav->format = 18;
-	wav->channels = channels;
-	wav->samplesPerSec = samplesPerSec;
-	wav->avgBytesPerSec = avgBytesPerSec;
-	wav->blockAlign = blockAlign;
-	wav->bitsPerSample = bitsPerSample;
-	wav->fmtChunkSize = 16;
-	wav->dataChunkSize = dataSize;
-	wav->waveData = waveData;
+	wav.format = 18;
+	wav.channels = channels;
+	wav.samplesPerSec = samplesPerSec;
+	wav.avgBytesPerSec = avgBytesPerSec;
+	wav.blockAlign = blockAlign;
+	wav.bitsPerSample = bitsPerSample;
+	wav.fmtChunkSize = 16;
+	wav.dataChunkSize = dataSize;
+	wav.waveData = waveData;
 
-	wav->openWrite(filenameWav);
-
-	delete wav;
+	wav.openWrite(filenameWav);
 
 	std::cout << "Successfull converted the xnb soundeffect file " << filename << " to wav file" << filenameWav << std::endl;
 }
