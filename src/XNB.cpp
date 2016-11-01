@@ -13,14 +13,14 @@ XNB::~XNB()
 	file.close();
 }
 
-string XNB::openRead(string fileName)
+std::string XNB::openRead(std::string fileName)
 {
 	filename = fileName;
-	file.open(filename, ios::in | ios::binary);
+	file.open(filename, std::ios::in | std::ios::binary);
 	if (!file.good())
 		return "Can't open file";
 
-	string strXNB = readString(3);
+	std::string strXNB = readString(3);
 	if (strXNB.compare("XNB") != 0)
 		return "File is not a XNB file";
 
@@ -42,15 +42,15 @@ string XNB::openRead(string fileName)
 	unsigned int readerCount = readByte();
 
 	for (unsigned int i = 0; i < readerCount; i++) {
-		string reader = readString();
+		std::string reader = readString();
 		unsigned int readerVersion = readInt();
-		readers.push_back(make_pair(reader, readerVersion));
+		readers.push_back(std::make_pair(reader, readerVersion));
 	}
 
 	readerType = 0;
 
 	if (readerCount == 1) {
-		string reader = readers[0].first;
+		std::string reader = readers[0].first;
 
 		if (reader.compare(0, 47, "Microsoft.Xna.Framework.Content.Texture2DReader") == 0)
 			readerType = 1;
@@ -64,13 +64,13 @@ string XNB::openRead(string fileName)
 	return "";
 }
 
-string XNB::openWrite(string fileName)
+std::string XNB::openWrite(std::string fileName)
 {
 	filename = fileName;
 	if (readers.empty())
 		return "Readers not set";
 
-	file.open(filename, ios::out | ios::binary);
+	file.open(filename, std::ios::out | std::ios::binary);
 	if (!file.good())
 		return "Can't create file";
 
@@ -141,15 +141,15 @@ char* XNB::readBytes(unsigned int length)
 	return data;
 }
 
-string XNB::readString(unsigned int length)
+std::string XNB::readString(unsigned int length)
 {
-	string str;
+	std::string str;
 	str.resize(length);
 	file.read(&str[0], str.size());
 	return str;
 }
 
-string XNB::readString()
+std::string XNB::readString()
 {
 	return readString(read7BitEncodedInt());
 }
@@ -174,12 +174,12 @@ void XNB::writeInt(unsigned int int32)
 	file.put(int32 >> 24);
 }
 
-void XNB::writeString(string str)
+void XNB::writeString(std::string str)
 {
 	file << str;
 }
 
-void XNB::writeEncodedString(string str)
+void XNB::writeEncodedString(std::string str)
 {
 	write7BitEncodedInt(str.length());
 	file << str;

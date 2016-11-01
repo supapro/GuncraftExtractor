@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-using namespace std;
 
 class WAV
 {
@@ -10,22 +9,22 @@ public:
 	WAV();
 	~WAV();
 
-	string filename;
+	std::string filename;
 	bool writeMode = false;
 
-	string openRead(string);
-	string openWrite(string);
+	std::string openRead(std::string);
+	std::string openWrite(std::string);
 
 	unsigned char readByte();
 	unsigned int readShort();
 	unsigned int readInt();
-	string readString(unsigned int);
+	std::string readString(unsigned int);
 	char* readBytes(unsigned int);
 
 	void writeByte(unsigned char);
 	void writeShort(unsigned short);
 	void writeInt(unsigned int);
-	void writeString(string);
+	void writeString(std::string);
 
 	unsigned short format;
 	unsigned short channels;
@@ -38,5 +37,5 @@ public:
 	unsigned int dataChunkSize;
 	char* waveData;
 private:
-	fstream file;
+	std::fstream file;
 };

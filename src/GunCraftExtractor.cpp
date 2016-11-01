@@ -1,4 +1,5 @@
 #include <memory>
+#include <cstdlib>
 
 #include "../include/GunCraftExtractor.h"
 
@@ -7,7 +8,6 @@
 #endif
 
 
-using namespace std;
 
 void setConsoleTitle(const char *title)
 {
@@ -24,37 +24,37 @@ int main(int argc, char *argv[])
 	setConsoleTitle("GunCraft Extractor - v1.1");
 
 	if (argc < 2) {
-		cout << "You need to start this program by dropping a file(s) on the executable." << endl;
-		cin.ignore();
+		std::cout << "You need to start this program by dropping a file(s) on the executable." << std::endl;
+		std::cin.ignore();
 		exit(0);
 	}
 
-	string fileName;
-	string ext;
+	std::string fileName;
+	std::string ext;
 	for (int i = 1; i < argc; ++i) {
 		fileName = argv[i];
 		ext = fileName.substr(fileName.length() - 4, 4);
 
 		if (ext.compare(".xnb") == 0) {
-			cout << "Converting xnb file " << argv[i] << endl;
+			std::cout << "Converting xnb file " << argv[i] << std::endl;
 			convertXnb(fileName);
 		} 
 		else if (ext.compare(".png") == 0) {
-			cout << "Converting png file " << argv[i] << " to xnb" << endl;
+			std::cout << "Converting png file " << argv[i] << " to xnb" << std::endl;
 			PngToXnb(fileName);
 		}
 		else if (ext.compare(".wav") == 0) {
-			cout << "Converting wav file " << argv[i] << " to xnb" << endl;
+			std::cout << "Converting wav file " << argv[i] << " to xnb" << std::endl;
 			WavToXnb(fileName);
 		}
 		else {
-			cout << "Unsupported file " << fileName << endl;
+			std::cout << "Unsupported file " << fileName << std::endl;
 		}
 
-		cout << endl;
+		std::cout << std::endl;
 	}
 
-	cin.ignore();
+	std::cin.ignore();
 	
 	return 0;
 }
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 void convertXnb(const std::string& fileName)
 {
         auto xnb = XNBUniquePtr(new XNB());
-	string error = xnb->openRead(fileName);
+	std::string error = xnb->openRead(fileName);
 	if (!error.empty()) {
 		std::cout << error << std::endl;
 		return;
@@ -174,7 +174,7 @@ void PngToXnb(const std::string& filename)
 {
 	const std::string filenameXnb = filename.substr(0, filename.length() - 4) + ".xnb";
 	XNB *xnb = new XNB();
-	xnb->readers.push_back(make_pair("Microsoft.Xna.Framework.Content.Texture2DReader, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553", 0));
+	xnb->readers.push_back(std::make_pair("Microsoft.Xna.Framework.Content.Texture2DReader, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553", 0));
 	const std::string errorXnb = xnb->openWrite(filenameXnb);
 	if (!errorXnb.empty()) {
 		std::cout << errorXnb << std::endl;
@@ -182,11 +182,11 @@ void PngToXnb(const std::string& filename)
 		return;
 	}
 
-	vector<unsigned char> image;
+	std::vector<unsigned char> image;
 	unsigned int width, height;
 	unsigned int error = lodepng::decode(image, width, height, filename);
 	if (error == 1) {
-		cout << "Error opening png file" << endl;
+		std::cout << "Error opening png file" << std::endl;
 		return;
 	}
 
@@ -217,8 +217,8 @@ void PngToXnb(const std::string& filename)
 		if (i == mipCount - 1) // don't calculate a mipmap for the last one
 			break;
 
-		unsigned int newWidth = max(width / 2 + width % 2, 1U);
-		unsigned int newHeight = max(height / 2 + height % 2, 1U);
+		unsigned int newWidth = std::max(width / 2 + width % 2, 1U);
+		unsigned int newHeight = std::max(height / 2 + height % 2, 1U);
 
 		size = newWidth * newHeight * 4;
 
@@ -246,30 +246,30 @@ void PngToXnb(const std::string& filename)
 		width = newWidth;
 		height = newHeight;
 
-		swap(imageBuffer, shrinkedImage);
+		std::swap(imageBuffer, shrinkedImage);
 	}
 
 	delete xnb;
 
-	cout << "Successfull converted the png file " << filename << " to xnb texture file" <<  filenameXnb << endl;
+	std::cout << "Successfull converted the png file " << filename << " to xnb texture file" <<  filenameXnb << std::endl;
 }
 
 void WavToXnb(const std::string& filename)
 {
 	WAV* wav = new WAV();
-	string error = wav->openRead(filename);
+	std::string error = wav->openRead(filename);
 	if (!error.empty()) {
-		cout << error << endl;
+		std::cout << error << std::endl;
 		delete wav;
 		return;
 	}
 
-	string filenameXnb = filename.substr(0, filename.length() - 4) + ".xnb";
+	std::string filenameXnb = filename.substr(0, filename.length() - 4) + ".xnb";
 	XNB* xnb = new XNB();
-	xnb->readers.push_back(make_pair("Microsoft.Xna.Framework.Content.SoundEffectReader", 0));
+	xnb->readers.push_back(std::make_pair("Microsoft.Xna.Framework.Content.SoundEffectReader", 0));
 	error = xnb->openWrite(filenameXnb);
 	if (!error.empty()) {
-		cout << error << endl;
+		std::cout << error << std::endl;
 		delete wav;
 		delete xnb;
 		return;
@@ -295,5 +295,5 @@ void WavToXnb(const std::string& filename)
 	delete wav;
 	delete xnb;
 
-	cout << "Successfull converted the wav file " << filename << " to xnb soundeffect file" << filenameXnb << endl;
+	std::cout << "Successfull converted the wav file " << filename << " to xnb soundeffect file" << filenameXnb << std::endl;
 }

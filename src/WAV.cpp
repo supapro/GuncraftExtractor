@@ -8,11 +8,11 @@ WAV::~WAV()
 	file.close();
 }
 
-string WAV::openRead(string fileName)
+std::string WAV::openRead(std::string fileName)
 {
 	filename = fileName;
 
-	file.open(filename, ios::in | ios::binary | ios::ate);
+	file.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
 	if (!file.good())
 		return "Can't open file";
 
@@ -37,7 +37,7 @@ string WAV::openRead(string fileName)
 
 	format = readShort();
 	if (format != 1)
-		return "Format " + to_string(format) + " not supported.";
+		return "Format " + std::to_string(format) + " not supported.";
 
 	channels = readShort();
 	samplesPerSec = readInt();
@@ -66,7 +66,7 @@ string WAV::openRead(string fileName)
 	return "";
 }
 
-string WAV::openWrite(string fileName)
+std::string WAV::openWrite(std::string fileName)
 {
 	filename = fileName;
 
@@ -97,7 +97,7 @@ string WAV::openWrite(string fileName)
 	if (waveData == NULL)
 		return "Wave data not set";
 	
-	file.open(filename, ios::out | ios::binary);
+	file.open(filename, std::ios::out | std::ios::binary);
 	if (!file.good())
 		return "Can't create file";
 
@@ -153,9 +153,9 @@ char* WAV::readBytes(unsigned int length)
 	return data;
 }
 
-string WAV::readString(unsigned int length)
+std::string WAV::readString(unsigned int length)
 {
-	string str;
+	std::string str;
 	str.resize(length);
 	file.read(&str[0], str.size());
 	return str;
@@ -182,7 +182,7 @@ void WAV::writeInt(unsigned int int32)
 	file.put(int32 >> 24);
 }
 
-void WAV::writeString(string str)
+void WAV::writeString(std::string str)
 {
 	file << str;
 }
