@@ -5,17 +5,16 @@ project(GuncraftExtractor)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -pedantic -std=c++1y")
 
 set(SOURCES
-      "src/GunCraftExtractor.cpp"
+      "src/main.cpp"
       "src/WAV.cpp"
       "src/XNB.cpp"
       "src/lodepng/lodepng.cpp"
-    )
+        src/converters.cpp)
 
 set(HEADERS
-      "include/GunCraftExtractor.h"
       "include/WAV.h"
       "include/XNB.h"
       "include/lodepng/lodepng.h"
-    )
+        include/converters.h)
 
 add_executable(GunCraftExtractor ${SOURCES} ${HEADERS})
