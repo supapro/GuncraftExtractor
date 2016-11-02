@@ -1,9 +1,11 @@
 #include <cstdlib>
-
+#include <algorithm>
 #include "../include/converters.h"
 
 #if defined(_WIN32)
 #include <windows.h>
+#undef min
+#undef max
 #endif
 
 

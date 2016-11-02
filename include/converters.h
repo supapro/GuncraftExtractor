@@ -1,16 +1,11 @@
 #pragma once
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <memory>
-#include <math.h>
 
 #include "lodepng/lodepng.h"
 
 #include "XNB.h"
 #include "WAV.h"
-
-
 
 typedef std::unique_ptr<XNB> XNBUniquePtr;
 
