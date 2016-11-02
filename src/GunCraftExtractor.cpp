@@ -86,7 +86,7 @@ void XnbToPng(XNBUniquePtr xnb)
 
 	const unsigned int format = xnb->readInt();
 	if (format != 0) {
-		std::cout << "Unsupported surface format " << std::to_string(format) << std::endl;
+		std::cout << "Unsupported surface format " << (format) << std::endl;
 		return;
 	}
 
@@ -95,9 +95,10 @@ void XnbToPng(XNBUniquePtr xnb)
 
 	std::cout << "Width: " << width << "; Height: " << height << std::endl;
 
-	//const unsigned int mipCount = xnb->readInt();
+	// note: we will uncomment it later!
+	// const unsigned int mipCount = xnb->readInt();
 
-	//cout << "Mip count: " << to_string(mipCount) << endl;
+	// std::cout << "Mip count: " << (mipCount) << std::endl;
 
 	const unsigned int size = xnb->readInt();
 	if (size != width * height * 4) {
