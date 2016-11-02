@@ -1,4 +1,5 @@
-Guncraft Extractor ![status](https://travis-ci.org/leha-bot/GuncraftExtractor.svg?branch=master)
+Guncraft Extractor [![status](https://travis-ci.org/leha-bot/GuncraftExtractor.svg?branch=master)](https://travis-ci.org/leha-bot/GuncraftExtractor/)
+[![Build status](https://ci.appveyor.com/api/projects/status/cu8918dwdx6u1kft?svg=true)](https://ci.appveyor.com/project/leha-bot/guncraftextractor)
 ==================
 
 This tool is made for modding the texture and sound files of Guncraft, but you can use it for other games too with little to no modifications.
