@@ -18,3 +18,5 @@ script:
    - cd build
    - cmake ..
    - make
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
