@@ -12,8 +12,8 @@ public:
 	std::string filename;
 	bool writeMode = false;
 
-	std::string openRead(std::string);
-	std::string openWrite(std::string);
+	std::string openRead(const std::string&);
+	std::string openWrite(const std::string&);
 
 	unsigned char readByte();
 	unsigned int readShort();
@@ -24,7 +24,7 @@ public:
 	void writeByte(unsigned char);
 	void writeShort(unsigned short);
 	void writeInt(unsigned int);
-	void writeString(std::string);
+	void writeString(const std::string&);
 
 	unsigned short format;
 	unsigned short channels;

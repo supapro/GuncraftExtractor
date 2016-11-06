@@ -8,12 +8,12 @@ WAV::~WAV()
 	file.close();
 }
 
-std::string WAV::openRead(std::string fileName)
+std::string WAV::openRead(const std::string &fileName)
 {
 	filename = fileName;
 
 	file.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
-	if (!file.good())
+	if (!file.is_open())
 		return "Can't open file";
 
 	if (file.tellg() < 45)
@@ -66,7 +66,7 @@ std::string WAV::openRead(std::string fileName)
 	return "";
 }
 
-std::string WAV::openWrite(std::string fileName)
+std::string WAV::openWrite(const std::string &fileName)
 {
 	filename = fileName;
 
@@ -117,8 +117,6 @@ std::string WAV::openWrite(std::string fileName)
 
 	return "";
 }
-
-
 
 
 //*************** Read methods ***************
@@ -182,7 +180,7 @@ void WAV::writeInt(unsigned int int32)
 	file.put(int32 >> 24);
 }
 
-void WAV::writeString(std::string str)
+void WAV::writeString(const std::string &str)
 {
 	file << str;
 }
