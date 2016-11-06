@@ -1,10 +1,12 @@
 #include <memory>
 #include <cstdlib>
-
+#include <algorithm>
 #include "../include/GunCraftExtractor.h"
 
 #if defined(_WIN32)
 #include <windows.h>
+#undef min
+#undef max
 #endif
 
 
