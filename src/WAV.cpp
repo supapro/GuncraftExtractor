@@ -1,11 +1,15 @@
 #include "../include/WAV.h"
 
-WAV::WAV(){}
+WAV::WAV()
+{
+	waveData = 0;
+}
 
 WAV::~WAV()
 {
 	delete[] waveData;
 	file.close();
+
 }
 
 std::string WAV::openRead(const std::string &fileName)
