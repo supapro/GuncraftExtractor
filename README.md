@@ -12,6 +12,9 @@ Drag and drop the file(s) you want to convert onto the executable, it will detec
     $ cmake ..
     $ make
 
+# Note on Android NDK / some MinGW / etc with lame C++11 stdlib
+	You should set option USE\_TO\_STRING\_HACK (cmake -DUSE\_TO\_STRING\_HACK ..) and clone hackish implementation of std::to\_string from https://github.com/leha-bot/to\_string (git submodule update)
+
 # Possible convertions
 - Xnb Texture2D <---> Png
 - Xnb SoundEffect <---> Wav

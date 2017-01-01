@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2.2)
 project(GuncraftExtractor)
 
 # todo: make some Android-specific conditional statements
-option(USE_TO_STRING_HACK "Use the std::to_string hackish implementation on Android NDK" ON)
+option(USE_TO_STRING_HACK "Use the std::to_string hackish implementation on Android NDK" OFF)
 
 if(MSVC)
       set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O2 -EHsc")
