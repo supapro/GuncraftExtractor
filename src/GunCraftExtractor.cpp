@@ -17,19 +17,20 @@ void setConsoleTitle(const char *title)
 	SetConsoleTitleA(title);
 #else
 	// set title terminal command.
-	printf("%c[0;%s%c", '\033', title, '\007');
+	std::cout << "\033]2;" << title << "\007";
 #endif
 }
 
 int main(int argc, char *argv[]) 
 {
-	setConsoleTitle("GunCraft Extractor - v1.1");
 
 	if (argc < 2) {
 		std::cout << "You need to start this program by dropping a file(s) on the executable." << std::endl;
 		std::cin.ignore();
 		exit(0);
 	}
+
+	setConsoleTitle("GunCraft Extractor - v1.1");
 
 	std::string fileName;
 	std::string ext;

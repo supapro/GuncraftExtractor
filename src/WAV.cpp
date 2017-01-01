@@ -1,5 +1,9 @@
 #include "../include/WAV.h"
 
+#ifdef USE_TO_STRING_HACK
+#include "../include/to_string/to_string.h"
+#endif
+
 WAV::WAV()
 {
 	waveData = 0;
