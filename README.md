@@ -14,7 +14,8 @@ Drag and drop the file(s) you want to convert onto the executable, it will detec
 
 # Note on Android NDK / some MinGW / etc with lame C++11 stdlib
 The build steps are slighly different, because you should set option USE\_TO\_STRING\_HACK (cmake -DUSE\_TO\_STRING\_HACK=1 ..) and clone hackish implementation of std::to\_string from https://github.com/leha-bot/to_string (git submodule update)
-    $ git submodule init
+
+    $ git submodule init
     $ git submodule update 
     $ mkdir build 
     $ cd build 
