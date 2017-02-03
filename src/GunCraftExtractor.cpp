@@ -118,7 +118,7 @@ void XnbToPng(XNBUniquePtr xnb)
 	// Was unused
 	//const unsigned error = lodepng::encode(filenamePng, image, width, height);
 
-	std::cout << "Successfull converted the xnb texture file " << filename << " to png file " << filenamePng << std::endl;
+	std::cout << "Successfully converted the xnb texture file " << filename << " to png file " << filenamePng << std::endl;
 }
 
 void XnbToWav(XNBUniquePtr xnb)

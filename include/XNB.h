@@ -10,8 +10,8 @@ public:
 	XNB();
 	~XNB();
 
-	std::string openRead(std::string);
-	std::string openWrite(std::string);
+	std::string openRead(const std::string &);
+	std::string openWrite(const std::string &filename);
 
 	std::string error;
 	unsigned int readerType;
@@ -32,8 +32,8 @@ public:
 	void writeShort(unsigned short);
 	void writeInt(unsigned int);
 	void write7BitEncodedInt(unsigned int);
-	void writeString(std::string);
-	void writeEncodedString(std::string); // same as writeString(), but with a 7bitencodedint for the size
+	void writeString(const std::string &s);
+	void writeEncodedString(const std::string &s); // same as writeString(), but with a 7bitencodedint for the size
 	void writeBytes(char*, unsigned int);
 
 	void setPointer(int);

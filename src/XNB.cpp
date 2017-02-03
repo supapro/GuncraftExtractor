@@ -13,9 +13,9 @@ XNB::~XNB()
 	file.close();
 }
 
-std::string XNB::openRead(std::string fileName)
+std::string XNB::openRead(const std::string &filename)
 {
-	filename = fileName;
+	this->filename = filename;
 	file.open(filename, std::ios::in | std::ios::binary);
 	if (!file.good())
 		return "Can't open file";
@@ -64,9 +64,9 @@ std::string XNB::openRead(std::string fileName)
 	return "";
 }
 
-std::string XNB::openWrite(std::string fileName)
+std::string XNB::openWrite(const std::string &filename)
 {
-	filename = fileName;
+	this->filename = filename;
 	if (readers.empty())
 		return "Readers not set";
 
@@ -174,15 +174,15 @@ void XNB::writeInt(unsigned int int32)
 	file.put(int32 >> 24);
 }
 
-void XNB::writeString(std::string str)
+void XNB::writeString(const std::string &s)
 {
-	file << str;
+	file << s;
 }
 
-void XNB::writeEncodedString(std::string str)
+void XNB::writeEncodedString(const std::string &s)
 {
-	write7BitEncodedInt(str.length());
-	file << str;
+	write7BitEncodedInt(s.length());
+	file << s;
 }
 
 void XNB::writeBytes(char* bytes, unsigned int length)
