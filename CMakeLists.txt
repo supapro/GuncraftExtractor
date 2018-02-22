@@ -5,32 +5,32 @@ project(GuncraftExtractor)
 # todo: make some Android-specific conditional statements
 option(USE_TO_STRING_HACK "Use the std::to_string hackish implementation on Android NDK" OFF)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if(MSVC)
-      set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O2 -EHsc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 else()
-      set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -Werror -pedantic -g -std=c++1y")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -pedantic")
 endif()
 
-set(SOURCES
-      "src/GunCraftExtractor.cpp"
-      "src/WAV.cpp"
-      "src/XNB.cpp"
-      "src/lodepng/lodepng.cpp"
-    )
+include_directories(include)
 
-set(HEADERS
-      "include/GunCraftExtractor.h"
-      "include/WAV.h"
-      "include/XNB.h"
-      "include/lodepng/lodepng.h"
-    )
+add_executable(GunCraftExtractor
+    src/GunCraftExtractor.cpp
+    src/WAV.cpp
+    src/XNB.cpp
+    src/lodepng/lodepng.cpp
 
-if(USE_TO_STRING_HACK)
-	set(HEADERS
-		${HEADERS}
-		"include/to_string/to_string.h"
-	   )
-	add_definitions("-DUSE_TO_STRING_HACK")
+    include/GunCraftExtractor.h
+    include/WAV.h
+    include/XNB.h
+    include/lodepng/lodepng.h
+)
+
+if (USE_TO_STRING_HACK)
+    target_sources(GunCraftExtractor PRIVATE
+        include/to_string/to_string.h
+    )
+    add_definitions(-DUSE_TO_STRING_HACK)
 endif()
-
-add_executable(GunCraftExtractor ${SOURCES} ${HEADERS})
